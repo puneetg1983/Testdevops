@@ -8,9 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     
-    - uses: azure/login@v1
+    - name: Login to Azure
+      uses: azure/login@v1
+      continue-on-error: false
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - run: |
-        az webapp list --query "[?state=='Running']"
+        az groups

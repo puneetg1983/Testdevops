@@ -13,12 +13,12 @@ jobs:
       continue-on-error: false
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-        enable-AzPSSession: true
+        enable-AzPSSession: false
     
     - run: |
         gitrepo=https://github.com/puneetg1983/WebCampGit
         webappname=daasdevopsdemowebcamp$RANDOM
-        az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku DEDICATED
+        az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku B1
         az webapp create --name $webappname --resource-group DAAS-DevOps-Testing --plan $webappname
         az webapp config set --resource-group DAAS-DevOps-Testing --name webappname --always-on true
         az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\msbuild.exe

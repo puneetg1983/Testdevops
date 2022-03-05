@@ -13,6 +13,7 @@ jobs:
       continue-on-error: false
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
     
     - run: |
         az group list

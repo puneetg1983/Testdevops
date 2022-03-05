@@ -15,4 +15,4 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - run: |
-        az groups
+        az group list

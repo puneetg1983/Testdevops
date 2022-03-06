@@ -20,7 +20,7 @@ jobs:
         webappname=daasdevopsdemowebcamp$RANDOM
         az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku B1
         az webapp create --name $webappname --resource-group DAAS-DevOps-Testing --plan $webappname
-        az webapp config set --resource-group DAAS-DevOps-Testing --name webappname --always-on true
-        az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\msbuild.exe
+        az webapp config set --resource-group DAAS-DevOps-Testing --name $webappname --always-on true
+        az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name $webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\msbuild.exe
         az webapp deployment source config --name $webappname --resource-group DAAS-DevOps-Testing \
         --repo-url $gitrepo --branch master --manual-integration

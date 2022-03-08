@@ -40,14 +40,14 @@ jobs:
           Write-Host "Deleting Web Apps..."
           foreach ($resource in $resources) {
               if ($resource.id -like '*/providers/Microsoft.Web/sites/*') {
-                Write-Host "Deleting $resource.id"
+                Write-Host $("Deleting" + $resource.id)
                 az resource delete --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
               }
           }
           Write-Host "Deleting App Service Plans"
           foreach ($resource in $resources) {
               if ($resource.id -like '*/providers/Microsoft.Web/serverfarms/*') {
-                Write-Host "Deleting $resource.id"
+                Write-Host $("Deleting" + $resource.id)
                 az resource delete --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
               }
           }

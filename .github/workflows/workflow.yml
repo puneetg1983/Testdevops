@@ -1,6 +1,9 @@
 on: [push]
 
-name: AzureLoginSample
+name: Daas Automated Testing
+
+env:
+  webappname: daasdevops$RANDOM
 
 jobs:
 
@@ -17,7 +20,6 @@ jobs:
     
     - name: Creating App Service Plan
       run: |
-        webappname=daasdevopsdemowebcamp$RANDOM
         az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku B1
     
     - name: Creating Web App

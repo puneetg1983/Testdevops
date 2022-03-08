@@ -15,22 +15,19 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
         enable-AzPSSession: false
     
-    - run: |
-        gitrepo=https://github.com/puneetg1983/WebCampGit
+    - name: Creating App Service Plan
+      run: |
         webappname=daasdevopsdemowebcamp$RANDOM
-
-        echo Creating App Service Plan
         az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku B1
-
-        echo Creating Web App $webappname
+    
+    - name: Creating Web App
+      run: |
         az webapp create --name $webappname --resource-group DAAS-DevOps-Testing --plan $webappname
-
-        echo Enabling AlwaysOn
         az webapp config set --resource-group DAAS-DevOps-Testing --name $webappname --always-on true
-
         echo Adding MSBuild App Setting
         az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name $webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\\msbuild.exe
-
-        echo Setting up Github
+    
+    - name: Setting up Github
+      run: |
         az webapp deployment source config --name $webappname --resource-group DAAS-DevOps-Testing \
                 --repo-url $gitrepo --branch master --manual-integration

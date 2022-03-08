@@ -32,14 +32,14 @@ jobs:
           foreach ($resource in $resources) {
               if ($resource.id -like '*/providers/Microsoft.Web/sites/*') {
                 Write-Host "Deleting " + $resource.id
-                az resource delete --resource-group --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
+                az resource delete --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
               }
           }
           Write-Host "Deleting App Service Plans"
           foreach ($resource in $resources) {
               if ($resource.id -like '*/providers/Microsoft.Web/serverfarms/*') {
                 Write-Host "Deleting " + $resource.id
-                az resource delete --resource-group --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
+                az resource delete --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
               }
           }
         

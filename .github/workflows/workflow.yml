@@ -23,21 +23,25 @@ jobs:
         enable-AzPSSession: true
     
     - name: Clearing existing Resources in Resource Group
-      run: |
-        $resources = az resource list --resource-group myResourceGroup | ConvertFrom-Json
-        Write-Host "Deleting Web Apps"
-        foreach ($resource in $resources) {
-            if ($resource.id -like 'providers/Microsoft.Web/sites/') {
-              az resource delete --resource-group myResourceGroup --ids $resource.id --verbose
-            }
-        }
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $resources = az resource list --resource-group myResourceGroup | ConvertFrom-Json
+          Write-Host "Deleting Web Apps"
+          foreach ($resource in $resources) {
+              if ($resource.id -like 'providers/Microsoft.Web/sites/') {
+                az resource delete --resource-group myResourceGroup --ids $resource.id --verbose
+              }
+          }
+
+          Write-Host "Deleting App Service Plans"
+          foreach ($resource in $resources) {
+              if ($resource.id -like 'providers/Microsoft.Web/serverfarms/') {
+                az resource delete --resource-group myResourceGroup --ids $resource.id --verbose
+              }
+          }
         
-        Write-Host "Deleting App Service Plans"
-        foreach ($resource in $resources) {
-            if ($resource.id -like 'providers/Microsoft.Web/serverfarms/') {
-              az resource delete --resource-group myResourceGroup --ids $resource.id --verbose
-            }
-        }
+        azPSVersion: "latest"
 
     - name: Creating App Service Plan
       run: |

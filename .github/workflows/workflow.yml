@@ -6,6 +6,10 @@ jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
+    
+    env:
+      GitRepoAspNet: https://github.com/puneetg1983/WebCampGit
+    
     steps:
     
     - name: Generate Unique Site Name
@@ -32,4 +36,4 @@ jobs:
     - name: Setting up Github
       run: |
         az webapp deployment source config --name ${{ env.SiteName }} --resource-group DAAS-DevOps-Testing \
-                --repo-url $gitrepo --branch master --manual-integration
+                --repo-url ${{ env.GitRepoAspNet }} --branch master --manual-integration

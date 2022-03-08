@@ -27,18 +27,17 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $resources = az resource list --resource-group --resource-group {{ env.ResourceGroup }} | ConvertFrom-Json
+          $resources = az resource list --resource-group --resource-group ${{ env.ResourceGroup }} | ConvertFrom-Json
           Write-Host "Deleting Web Apps"
           foreach ($resource in $resources) {
               if ($resource.id -like 'providers/Microsoft.Web/sites/') {
-                az resource delete --resource-group --resource-group {{ env.ResourceGroup }} --ids $resource.id --verbose
+                az resource delete --resource-group --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
               }
           }
-
           Write-Host "Deleting App Service Plans"
           foreach ($resource in $resources) {
               if ($resource.id -like 'providers/Microsoft.Web/serverfarms/') {
-                az resource delete --resource-group --resource-group {{ env.ResourceGroup }} --ids $resource.id --verbose
+                az resource delete --resource-group --resource-group ${{ env.ResourceGroup }} --ids $resource.id --verbose
               }
           }
         
@@ -46,16 +45,16 @@ jobs:
 
     - name: Creating App Service Plan
       run: |
-        az appservice plan create --name ${{ env.SiteName }} --resource-group {{ env.ResourceGroup }} --sku B1
+        az appservice plan create --name ${{ env.SiteName }} --resource-group ${{ env.ResourceGroup }} --sku B1
     
     - name: Creating Web App
       run: |
-        az webapp create --name ${{ env.SiteName }} --resource-group {{ env.ResourceGroup }} --plan ${{ env.SiteName }}
-        az webapp config set --resource-group {{ env.ResourceGroup }} --name ${{ env.SiteName }} --always-on true
+        az webapp create --name ${{ env.SiteName }} --resource-group ${{ env.ResourceGroup }} --plan ${{ env.SiteName }}
+        az webapp config set --resource-group ${{ env.ResourceGroup }} --name ${{ env.SiteName }} --always-on true
         echo Adding MSBuild App Setting
-        az webapp config appsettings set --resource-group {{ env.ResourceGroup }} --name ${{ env.SiteName }} --settings MSBUILD_PATH=%MSBUILD_15_DIR%\\msbuild.exe
+        az webapp config appsettings set --resource-group ${{ env.ResourceGroup }} --name ${{ env.SiteName }} --settings MSBUILD_PATH=%MSBUILD_15_DIR%\\msbuild.exe
     
     - name: Setting up Github
       run: |
-        az webapp deployment source config --name ${{ env.SiteName }} --resource-group {{ env.ResourceGroup }} \
+        az webapp deployment source config --name ${{ env.SiteName }} --resource-group ${{ env.ResourceGroup }} \
                 --repo-url ${{ env.GitRepoAspNet }} --branch master --manual-integration

@@ -29,7 +29,7 @@ jobs:
         az webapp config set --resource-group DAAS-DevOps-Testing --name $webappname --always-on true
 
         echo Adding MSBuild App Setting
-        az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name $webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\msbuild.exe
+        az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name $webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\\msbuild.exe
 
         echo Setting up Github
         az webapp deployment source config --name $webappname --resource-group DAAS-DevOps-Testing \

@@ -2,14 +2,14 @@ on: [push]
 
 name: Daas Automated Testing
 
-env:
-  webappname: daasdevops$RANDOM
-
 jobs:
 
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+    
+    - name: Generate Unique Site Name
+      run: echo SiteName=daasdevops$(date +%s) >> $GITHUB_ENV
     
     - name: Login to Azure
       uses: azure/login@v1
@@ -20,16 +20,16 @@ jobs:
     
     - name: Creating App Service Plan
       run: |
-        az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku B1
+        az appservice plan create --name ${{ env.SiteName }} --resource-group DAAS-DevOps-Testing --sku B1
     
     - name: Creating Web App
       run: |
-        az webapp create --name $webappname --resource-group DAAS-DevOps-Testing --plan $webappname
-        az webapp config set --resource-group DAAS-DevOps-Testing --name $webappname --always-on true
+        az webapp create --name ${{ env.SiteName }} --resource-group DAAS-DevOps-Testing --plan ${{ env.SiteName }}
+        az webapp config set --resource-group DAAS-DevOps-Testing --name ${{ env.SiteName }} --always-on true
         echo Adding MSBuild App Setting
-        az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name $webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\\msbuild.exe
+        az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name ${{ env.SiteName }} --settings MSBUILD_PATH=%MSBUILD_15_DIR%\\msbuild.exe
     
     - name: Setting up Github
       run: |
-        az webapp deployment source config --name $webappname --resource-group DAAS-DevOps-Testing \
+        az webapp deployment source config --name ${{ env.SiteName }} --resource-group DAAS-DevOps-Testing \
                 --repo-url $gitrepo --branch master --manual-integration

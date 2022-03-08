@@ -18,9 +18,19 @@ jobs:
     - run: |
         gitrepo=https://github.com/puneetg1983/WebCampGit
         webappname=daasdevopsdemowebcamp$RANDOM
+
+        echo Creating App Service Plan
         az appservice plan create --name $webappname --resource-group DAAS-DevOps-Testing --sku B1
+
+        echo Creating Web App $webappname
         az webapp create --name $webappname --resource-group DAAS-DevOps-Testing --plan $webappname
+
+        echo Enabling AlwaysOn
         az webapp config set --resource-group DAAS-DevOps-Testing --name $webappname --always-on true
+
+        echo Adding MSBuild App Setting
         az webapp config appsettings set --resource-group DAAS-DevOps-Testing --name $webappname --settings MSBUILD_PATH=%MSBUILD_15_DIR%\msbuild.exe
+
+        echo Setting up Github
         az webapp deployment source config --name $webappname --resource-group DAAS-DevOps-Testing \
-        --repo-url $gitrepo --branch master --manual-integration
+                --repo-url $gitrepo --branch master --manual-integration
